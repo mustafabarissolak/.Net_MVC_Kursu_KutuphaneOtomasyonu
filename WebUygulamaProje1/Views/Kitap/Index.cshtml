@@ -1,0 +1,82 @@
+﻿@using WebUygulamaProje1.Utility
+@model List<Kitap>
+@if (TempData["basarili"] != null)
+{
+    <h2 style="color:red;">@TempData["basarili"]</h2>
+}
+@{
+    ViewData["Title"] = "Kitaplar";
+}
+
+<div class="container">
+    <div class="row pt-3 pb-4">
+        <div>
+            <h1>Kitap Sayfası</h1>
+        </div>
+    </div>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="text-align:center;"></th>
+                @if (User.IsInRole(UserRoles.Role_Admin))
+                {
+                    <th style="text-align:center;">Id</th>
+                }
+                <th style="text-align:center;">Kitap Adı</th>
+                <th style="text-align:center;">Açıklama</th>
+                <th style="text-align:center;">Yazar</th>
+                <th style="text-align:center;">Kitap Türü</th>
+                <th style="text-align:center;">Fiyat</th>
+                @if (User.IsInRole(UserRoles.Role_Admin))
+                {
+                    <th></th>
+                    <th></th>
+                }
+            <tr />
+        </thead>
+        <tbody>
+            @foreach (var kitap in Model)
+            {
+                <tr>
+                    <td align="center" valign="middle">
+                        <img src="@kitap.ResimUrl" style="border-radius: 7px; border:1px solid #bbb9b9;
+                                max-width:100px; max-block-size:100px;" />
+                    </td>
+                    @if (User.IsInRole(UserRoles.Role_Admin))
+                    {
+                        <td align="center" valign="middle">@kitap.Id</td>
+                    }
+                    <td align="center" valign="middle">@kitap.KitapAdi</td>
+                    <td align="center" valign="middle">@kitap.Tanim</td>
+                    <td align="center" valign="middle">@kitap.Yazar</td>
+                    <td align="center" valign="middle">@kitap.KitapTuru.Ad</td>
+                    <td align="center" valign="middle">@kitap.Fiyat</td>
+                    @if (User.IsInRole(UserRoles.Role_Admin))
+                    {
+                        <td align="center" valign="middle">
+                            <a asp-controller="Kitap" asp-action="EkleGuncelle" asp-route-id="@kitap.Id" type="button" class="btn btn-success" style="width:200px;">Güncelle</a>
+                        </td>
+
+                        <td align="center" valign="middle">
+                            <a asp-controller="Kitap" asp-action="Sil" asp-route-id="@kitap.Id" type="button" class="btn btn-danger" style="width:200px;">Sil</a>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+    @if (User.IsInRole(UserRoles.Role_Admin))
+    {
+        <div class="row pt-3 pb-2">
+            <div>
+                <a asp-controller="Kitap" asp-action="EkleGuncelle" class="btn btn-lg btn-primary">
+                    Yeni Kitap Ekle
+                </a>
+            </div>
+        </div>
+    }
+</div>
+
+
+
